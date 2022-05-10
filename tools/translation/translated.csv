@@ -1,0 +1,67 @@
+key,en,zh
+salary list,salary list,薪资列表
+add employer,add employee,添加员工工资
+are you sure you want to delete this item?,are you sure you want to delete this item?,你确定要删除这个项目吗？
+can not less then {{count}} character,can not less then {{count}} character,不能少于{{count}}字符
+no more than {{count}} character,no more than {{count}} character,不能多于{{count}}个字符
+use NFT avatar,use NFT avatar,使用NFT头像
+select NFT avatar,select NFT avatar,选择NFT头像
+use as avatar,use as avatar,作为头像使用
+load more,load more,加载更多
+no permission to access this page,no permission to access this page,没有权限访问此页面
+check your login user to confirm that you are eligible to access this page,check your login user to confirm that you are eligible to access this page,检查您的登录用户，确认您有资格访问此页面
+waiting for NFT contract deploying,waiting for NFT contract deploying,等待NFT合同的部署
+it may take 5 - 10 mins after you submit the deploying tx,it may take 5 - 10 mins after you submit the deploying tx,在你提交部署任务后，可能需要5-10分钟。
+Redeployment contracts,Redeployment contracts,调配合同
+upload image,upload image,上传图片
+please select language,please select language,请选择语言
+language_warning_intro,language_warning_intro,语言_警告_介绍
+please select,please select,请选择
+please select token,please select token,请选择代币
+token_warning_intro,token_warning_intro,警示语_提示语
+home,home,首页
+club is not exist,club is not exist,俱乐部不存在
+created at {{time}},created at {{time}},创建于{{时间}}。
+about,about,关于
+airdrop,airdrop,空投
+hot collections,hot collections,热门收藏
+setting,setting,设置
+management,management,管理
+avatar,avatar,头像
+basic infomation,basic infomation,基本信息
+theme,theme,主题
+socail icons,socail icons,社群图标
+links,links,链接
+copy,copy,复制
+preview,preview,预览
+connect wallet,connect wallet,连接钱包
+name,name,名称
+bio,bio,生物
+custom url name,custom url name,自定义url名称
+ens,ens,合奏
+submit,submit,提交
+add icon,add icon,添加图标
+add new link,add new link,添加新链接
+address,address,地址
+amount,amount,数量
+create time,create time,创建时间
+update time,update time,更新时间
+action,action,行动
+empty,empty,空
+employee name,employee name,雇员姓名
+wallet address,wallet address,钱包地址
+ETH wallet address,ETH wallet address,ETH钱包地址
+token,token,代币
+delete,delete,删除
+update,update,更新
+salary statistics,salary statistics,薪资统计
+total amount,total amount,总金额
+balance,balance,余额
+batch payroll,batch payroll,批量发放工资
+add employee salary,add employee salary,添加员工工资
+send salary,send salary,发送工资
+confirm salary list,confirm salary list,确认工资清单
+wallet,wallet,钱包
+pay success,pay success,支付成功
+approve token,approve token,批准代币
+confirm and pay salary,confirm and pay salary,确认并支付工资
