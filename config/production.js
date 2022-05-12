@@ -2,8 +2,8 @@ module.exports =  {
 
     'ENV'               : 'production',
 
-    'API'               : 'http://dev.api.zkpayroll.com',
-    'WEBSITE'           : 'http://127.0.0.1:3000',
+    'API'               : 'http://prod.api.zkpayroll.com',
+    'WEBSITE'           : 'http://prod.www.zkpayroll.com',
     'LOGO'              : 'online',
     'FORBIDDEN_CHINA'   : true,
     'GA_TRACKING_ID'    : 'G-5FDR19R00J',
