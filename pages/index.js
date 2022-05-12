@@ -16,7 +16,6 @@ import { withRouter } from 'next/router'
 import {setCookie} from 'helper/cookie'
 
 import {withTranslate} from 'hocs/index'
-import {t} from 'helper/translate'
 import {ClockIcon,CurrencyDollarIcon,TableIcon} from '@heroicons/react/outline'
 
 @withTranslate
@@ -29,19 +28,8 @@ class Home extends React.Component {
         }
     }
 
-    componentDidMount() {
-    }
-
-
-    // @autobind
-    // initPage() {
-    //     this.props.initApp();
-    //     // initPage('login_user',{},store.dispatch,req.cookies)
-    // }
-
-
     render() {
-        // const {t} = this.props.i18n;
+        const {t} = this.props.i18n;
         
 
         return <PageWrapper>
@@ -74,7 +62,7 @@ class Home extends React.Component {
                                 <ClockIcon className='w-24 text-blue-500'/>
                             </div>
                             <div>
-                                <div className='text-xl font-bold mb-4'>{t('steaming pay')}</div>
+                                <div className='text-xl font-bold mb-4'>{t('streaming pay')}</div>
                                 <div className='text-gray-600'>
                                     {t('pay as time passed, pay every second')}
                                 </div>

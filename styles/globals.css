@@ -303,6 +303,17 @@ input{outline:none;}
 .bg-select-a .orange {
     @apply bg-yellow-300;
 }
+
+.tab-2 {
+    @apply bg-blue-500 py-4 justify-center flex space-x-7 mb-8;
+}
+.tab-2 .tab-one {
+    @apply rounded-full  px-4 py-1 text-white font-bold;
+}
+.tab-2 .tab-one.active {
+    @apply bg-white text-black font-bold;
+}
+
 .page-wapper {
     @apply max-w-screen-xl mx-auto py-12;
 }
@@ -766,10 +777,10 @@ body {
     @apply w-4 h-4 mr-2;
 } */
 .main-headers a {
-    @apply border-b-2 border-transparent; 
+    @apply border-b-2 border-transparent text-base; 
 }
 .main-headers .active{
-    @apply border-blue-500;
+    @apply  text-blue-500 font-bold;
 }
 .btn {
     @apply font-ubuntu px-4 py-2 font-bold rounded-lg active:ring-2 hover:ring-2;

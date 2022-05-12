@@ -153,6 +153,7 @@ class SalaryAdd extends React.Component {
             'contract_address'  : '',
         }
 
+
         return  <Modal
                     width={650}
                     title={null}

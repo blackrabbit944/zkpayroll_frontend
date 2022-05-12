@@ -185,6 +185,7 @@ class WalletConnectModal extends React.Component {
         if (login_user && login_user.get('wallet_address')) {
             short_wallet_address = login_user.get('wallet_address').slice(0,4) + '...' + login_user.get('wallet_address').slice(-4)
         }
+        let etherscan_base = getConfig('ETHERSCAN_BASE');
 
         // console.log('website_domain',website_domain)
         /*<li>
@@ -210,7 +211,7 @@ class WalletConnectModal extends React.Component {
                         </CopyToClipboard>
                         </div>
                         <div className={"text-center w-full flex justify-center mt-2 mb-8"}>
-                            <a href={"https://etherscan.io/address/"+login_user.get('wallet_address')} target="_blank" className="flex items-center a text-sm"><CursorClickIcon className={"w-4 h-4"} />View on Etherscan</a>
+                            <a href={etherscan_base+"/address/"+login_user.get('wallet_address')} target="_blank" className="flex items-center a text-sm"><CursorClickIcon className={"w-4 h-4"} />View on Bscscan</a>
                         </div>
                     </div>
                     <div className="mt-4 text-center mb-4">
@@ -221,9 +222,7 @@ class WalletConnectModal extends React.Component {
                 : <Modal
                 className=""
                 width={420}
-                title={
-                    t('connect wallet')
-                } 
+                title={t('connect wallet')} 
                 footer={null}
                 visible={global_modal=='connect'} 
                 onOk={this.handleOk} 

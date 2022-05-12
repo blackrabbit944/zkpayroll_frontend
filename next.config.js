@@ -65,6 +65,7 @@ let config = {
           use: ["raw-loader"]
       });
 
+
       console.log('alias',path.resolve(process.cwd(), 'node_modules', 'bn.js'));
 
       config.resolve.alias = {
@@ -75,6 +76,11 @@ let config = {
       // if (!isServer) {
       //       config.optimization.splitChunks.cacheGroups.commons.minChunks = 2;
       // }
+
+      if (!isServer) {
+        config.resolve.fallback.fs = false;
+      }
+  
 
       return config;
     }

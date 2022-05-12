@@ -14,6 +14,7 @@ import { BigNumber } from 'bignumber.js';
 
 import Erc20 from 'helper/web3/erc20'
 import SalarySendModal from 'components/salary/send_modal'
+import SalarySendSafeboxModal from 'components/salary/send_safebox_modal'
 import autobind from 'autobind-decorator';
 
 @withTranslate
@@ -26,6 +27,7 @@ class SalaryStaistics extends React.Component {
             balance_map : {},
 
             'show_pay_salary_modal' : false,
+            'show_pay_salary_safebox_modal' : false,
             'contract_address'      : null,
             'total_amount'          : 0
         }
@@ -81,6 +83,15 @@ class SalaryStaistics extends React.Component {
     }
 
     @autobind
+    gotoPaySalaryInSafebox(contract_address,total_amount) {
+        this.setState({
+            'show_pay_salary_safebox_modal' : true,
+            'contract_address'      : contract_address,
+            'total_amount'          : total_amount
+        })
+    }
+
+    @autobind
     gotoPaySalary(contract_address,total_amount) {
         this.setState({
             'show_pay_salary_modal' : true,
@@ -93,6 +104,7 @@ class SalaryStaistics extends React.Component {
     closeModal() {
         this.setState({
             'show_pay_salary_modal' : false,
+            'show_pay_salary_safebox_modal' : false,
             'contract_address'      : null,
             'total_amount'          : 0
         })
@@ -102,7 +114,7 @@ class SalaryStaistics extends React.Component {
     render() {
 
         const {list_data,list_rows,stat_map,login_user} = this.props;
-        const {show_pay_salary_modal,contract_address,total_amount} = this.state;
+        const {show_pay_salary_modal,contract_address,total_amount,show_pay_salary_safebox_modal} = this.state;
         const {t} = this.props.i18n;
 
         if (Object.keys(stat_map).length == 0) {
@@ -149,7 +161,10 @@ class SalaryStaistics extends React.Component {
                                     <td className='uppercase'>{getTokenName(key)}</td>
                                     <td>{stat_map[key]['amount'].toNumber()}</td>
                                     <td>{this.state.balance_map[key] ? this.state.balance_map[key] : 0}</td>
-                                    <td className='flex justify-end'><button className='btn btn-sm btn-primary' onClick={this.gotoPaySalary.bind({},key,stat_map[key]['amount'])}>{t('batch payroll')}</button></td>
+                                    <td className='flex justify-end'>
+                                        <button className='btn btn-sm btn-default mr-2' onClick={this.gotoPaySalaryInSafebox.bind({},key,stat_map[key]['amount'])}>{t('Batch send salary to zk safebox')}</button>
+                                        <button className='btn btn-sm btn-primary' onClick={this.gotoPaySalary.bind({},key,stat_map[key]['amount'])}>{t('batch send salary')}</button>
+                                    </td>
                                 </tr>
                             })
                         }
@@ -159,7 +174,8 @@ class SalaryStaistics extends React.Component {
                 </tbody>
             </table>
             <SalarySendModal visible={show_pay_salary_modal} list_rows={list_rows} contract_address={contract_address} total_amount={total_amount} closeModal={this.closeModal}/>
-        </div>
+            <SalarySendSafeboxModal visible={show_pay_salary_safebox_modal} list_rows={list_rows} contract_address={contract_address} total_amount={total_amount} closeModal={this.closeModal}/>
+      </div>
         
 
 

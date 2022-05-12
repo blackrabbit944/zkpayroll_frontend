@@ -20,8 +20,9 @@ import { denormalize } from 'normalizr';
 import { userSchema,clubSchema } from 'redux/schema/index'
 import { initApp,setSlider,setGlobalModal } from 'redux/reducer/setting'
 import {fakeLoginUser,logoutUser} from 'redux/reducer/user';
-import { t } from 'helper/translate';
+import {withTranslate} from 'hocs/index'
 
+@withTranslate
 class PageWrapper extends React.Component {
 
 
@@ -90,10 +91,7 @@ class PageWrapper extends React.Component {
 
     render() {
 
-        const {active_club} = this.props;
-
-        console.log('active_club',active_club)
-
+        const {t} = this.props.i18n;
 
         return (
             <div className="fullpage-container">
@@ -129,13 +127,12 @@ class PageWrapper extends React.Component {
                             </a>
                         </Link>
 
-                        <div className='flex items-center space-x-4 main-headers'>
+                        <div className='flex items-center space-x-4 main-headers capitalize'>
                             <NavLink href="/"><a>{t('home')}</a></NavLink>
                             <NavLink href="/batch"><a>{t('batch pay')}</a></NavLink>
-                            <NavLink href="/steaming"><a>{t('steaming pay')}</a></NavLink>
-                            <NavLink href="/my_steaming"><a>{t('my steaming pay')}</a></NavLink>
+                            <NavLink href="/streaming" matchstart><a>{t('streaming pay')}</a></NavLink>
+                            <NavLink href="/safebox"><a>{t('safebox')}</a></NavLink>
                         </div>
-
 
                         <div className="flex justify-end items-center flex-grow">
                             <LanguageBtn />
@@ -182,16 +179,9 @@ function mapStateToProps(state,ownProps) {
         login_user = denormalize(login_user_id,userSchema,entities)
     }
 
-    let active_club_id = state.getIn(['setting','active_club_id']);
-    let active_club = null;
-    if (active_club_id) {
-        active_club = denormalize(active_club_id,clubSchema,entities)
-    }
-
     return {
         'login_user'  :  login_user,
         'slider'      :  state.getIn(['setting','slider']),
-        'active_club' :  active_club
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(PageWrapper);

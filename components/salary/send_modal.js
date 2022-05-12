@@ -27,6 +27,7 @@ import {CheckCircleIcon} from '@heroicons/react/solid'
 //测试
 import EtherscanTx from 'components/etherscan/tx';
 import {getValueFromAmountAndDecimals} from 'helper/web3/number'
+import {BigNumber} from 'ethers';
 
 @withTranslate
 @withMustLogin
@@ -273,6 +274,8 @@ class SalarySendModal extends React.Component {
                         </tbody>                     
                     </table>
                     
+                    <h2 className='h2 text-center my-4'>{t('batch send salary')}</h2>
+
                     {
                         (page == 'step3')
                         ? <div className='border-2 border-green-400 rounded-lg overflow-hidden py-12'>

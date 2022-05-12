@@ -1,13 +1,16 @@
 import React from 'react'
 export default function SteamingCircle({
     total,
-    total_allow_climb,
+    total_release,
     climbed
 }) {
 
-    let percent = (total_allow_climb.toString() * 100 / total.toString()).toFixed(2);
+    let percent = (total_release.toString() * 100 / total.toString()).toFixed(2);
     
-    console.log('debug:total_allow_climb',total_allow_climb.toString(),percent);
+    if (percent > 100) {
+        percent = 100;
+    }
+    // console.log('debug:total_allow_claim',total_allow_claim.toString(),percent);
     // percent = '20px';
     
     return <div>

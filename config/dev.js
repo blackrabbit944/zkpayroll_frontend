@@ -26,6 +26,8 @@ module.exports =  {
         ]
     },
 
+    'ETHERSCAN_BASE'    : 'https://testnet.bscscan.com',
+
     'SALARY_TOKEN_LIST' : {
         '0xed24fc36d5ee211ea25a80239fb8c4cfd80f12ee'    :  'busd',
         '0x822ca080e094bf068090554a19bc3d6618c800b3'    :  'usdt'

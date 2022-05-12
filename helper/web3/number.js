@@ -22,19 +22,28 @@ export const getSteamingData = (before) => {
 
     let during_time = before.stopTime.sub(before.startTime);    //时间
     let total = during_time.mul(before.ratePerSecond);  //总计
-    let climbed = total.sub(before.remainingBalance);    //已经领取
+    let claimed = total.sub(before.remainingBalance);    //已经领取
 
-    let unxtime_now = getUnixtime();
+    let unixtime_now = getUnixtime();
 
-    let during_time_until_now = ethers.BigNumber.from(unxtime_now).sub(before.startTime);
-    let total_allow_climb = during_time_until_now.mul(before.ratePerSecond).sub(climbed);
+    let during_time_until_now = ethers.BigNumber.from(unixtime_now).sub(before.startTime);
+
+    let total_release;
+    if (during_time_until_now.mul(before.ratePerSecond).gt(total)) {
+        total_release = total;
+    }else {
+        total_release = during_time_until_now.mul(before.ratePerSecond);
+    }
+
+    let total_allow_claim = total_release.sub(claimed);
 
     return {
         during_time : during_time,
         total : total,
-        climbed : climbed,
-        unxtime_now : unxtime_now,
+        claimed : claimed,
+        unixtime_now : unixtime_now,
         during_time_until_now : during_time_until_now,
-        total_allow_climb : total_allow_climb
+        total_allow_claim : total_allow_claim,
+        total_release : total_release
     }
 }

@@ -5,7 +5,7 @@ import { ethers } from "ethers";
 // import notification from 'components/common/notification'
 import {getConfig} from 'helper/config'
 
-const zkpayroll_abi =[
+const zkpayroll_abi = [
   {
     "inputs": [
       {
@@ -163,6 +163,11 @@ export default class Zkpayroll {
 
     async batchStreamPay(to_addresses,amounts,token_addresses,start_times,stop_times) {
       let tx = await this.contract.batchStreamPay(to_addresses,amounts,token_addresses,start_times,stop_times);
+      return tx;
+    }
+
+    async batchZkPay(token_addresses,to_addresses,amounts) {
+      let tx = await this.contract.batchZkPay(token_addresses,to_addresses,amounts);
       return tx;
     }
 

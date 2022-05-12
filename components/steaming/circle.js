@@ -2,8 +2,8 @@ import React from 'react'
 
 export default function SteamingLine({
     total,
-    total_allow_climb,
-    climbed,
+    total_allow_claim,
+    claimed,
     width,
     stroke
 }) {
@@ -21,14 +21,16 @@ export default function SteamingLine({
     let width_outside = width + 2 * stroke;
     let cxy = radius+stroke;
 
-    let progress = (total_allow_climb.toString() * 100 / total.toString()).toFixed(2);
+    let progress = (total_allow_claim.toString() * 100 / total.toString()).toFixed(2);
+
+
     let circumference = radius * 2 * Math.PI;
 
     const strokeDashoffset = circumference - progress / 100 * circumference;
 
     console.log('progress',progress,strokeDashoffset);
 
-    // console.log('debug:total_allow_climb',total_allow_climb.toString());
+    // console.log('debug:total_allow_claim',total_allow_climb.toString());
     // percent = '20px';
     
     return <div>

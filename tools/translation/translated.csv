@@ -4,21 +4,12 @@ add employer,add employee,添加员工工资
 are you sure you want to delete this item?,are you sure you want to delete this item?,你确定要删除这个项目吗？
 can not less then {{count}} character,can not less then {{count}} character,不能少于{{count}}字符
 no more than {{count}} character,no more than {{count}} character,不能多于{{count}}个字符
-use NFT avatar,use NFT avatar,使用NFT头像
-select NFT avatar,select NFT avatar,选择NFT头像
-use as avatar,use as avatar,作为头像使用
 load more,load more,加载更多
-no permission to access this page,no permission to access this page,没有权限访问此页面
-check your login user to confirm that you are eligible to access this page,check your login user to confirm that you are eligible to access this page,检查您的登录用户，确认您有资格访问此页面
-waiting for NFT contract deploying,waiting for NFT contract deploying,等待NFT合同的部署
-it may take 5 - 10 mins after you submit the deploying tx,it may take 5 - 10 mins after you submit the deploying tx,在你提交部署任务后，可能需要5-10分钟。
-Redeployment contracts,Redeployment contracts,调配合同
 upload image,upload image,上传图片
 please select language,please select language,请选择语言
 language_warning_intro,language_warning_intro,语言_警告_介绍
 please select,please select,请选择
 please select token,please select token,请选择代币
-token_warning_intro,token_warning_intro,警示语_提示语
 home,home,首页
 club is not exist,club is not exist,俱乐部不存在
 created at {{time}},created at {{time}},创建于{{时间}}。
@@ -27,26 +18,13 @@ airdrop,airdrop,空投
 hot collections,hot collections,热门收藏
 setting,setting,设置
 management,management,管理
-avatar,avatar,头像
-basic infomation,basic infomation,基本信息
-theme,theme,主题
-socail icons,socail icons,社群图标
-links,links,链接
-copy,copy,复制
-preview,preview,预览
-connect wallet,connect wallet,连接钱包
 name,name,名称
-bio,bio,生物
-custom url name,custom url name,自定义url名称
-ens,ens,合奏
 submit,submit,提交
-add icon,add icon,添加图标
-add new link,add new link,添加新链接
 address,address,地址
 amount,amount,数量
 create time,create time,创建时间
 update time,update time,更新时间
-action,action,行动
+action,action,操作
 empty,empty,空
 employee name,employee name,雇员姓名
 wallet address,wallet address,钱包地址
@@ -65,3 +43,66 @@ wallet,wallet,钱包
 pay success,pay success,支付成功
 approve token,approve token,批准代币
 confirm and pay salary,confirm and pay salary,确认并支付工资
+batch pay,batch pay,批量付款
+streaming pay,streaming pay,流支付
+safebox,safebox,保险箱
+pay your employees with web3,pay your employees with web3,用web3方式支付你的员工薪水
+Use crypto currencies and streaming pay to make your employees feel like they are making money every second,Use crypto currencies and streaming pay to make your employees feel like they are making money every second,使用加密货币和流媒体支付，让你的员工感觉到他们每一秒都在挣钱
+features,features,特点
+"pay as time passed, pay every second","pay as time passed, pay every second",按时间支付，每秒支付
+support multi tokens,support multi tokens,支持多币种
+"you can use BUSD,USDT,BNB and more tokens for paying","you can use BUSD,USDT,BNB and more tokens for paying",你可以使用BUSD、USDT、BNB和更多的代币进行支付
+manage salary,manage salary,管理工资
+manage  salary system,manage  salary system,管理工资系统
+please select during time,please select during time,请选择时间
+to address,to address,地址
+password,password,密码
+creating proof data,creating proof data,创建证明数据
+waiting for calling metamask,waiting for calling metamask,等待调用metamask
+batch send salary,batch send salary,批量发送工资
+batch send salary to zk safebox,batch send salary to zk safebox,批量发送工资到ZK保险箱
+Batch send salary to zk safebox,Batch send salary to zk safebox,批量发送工资至ZK保险箱
+during time,during time,期间
+one day,one day,一天
+1 day,1 day,1天
+7 days,7 days,7天
+30 days,30 days,30天
+365 days,365 days,365天
+seconds,seconds,秒
+during_time,during_time,持续时间
+my salary,my salary,我的工资
+total salary,total salary,总工资
+unclaimed salary,unclaimed salary,未领取的工资
+already claimed salary,already claimed salary,已领取的工资
+checking for allowed withdraw balance,checking for allowed withdraw balance,检查允许提取的余额
+sending withdraw tx,sending withdraw tx,发送提款交易
+safebox balance,safebox balance,保险箱余额
+create safebox,create safebox,创建保险箱
+creating safebox,creating safebox,创建保险箱
+my streaming pay,my streaming pay,我的流支付工资
+from,from,从
+total,total,共计
+streaming,streaming,流支付
+begin_time,begin_time,开始时间
+end time,end time,结束时间
+connect wallet,connect wallet,连接钱包
+create safebox tx sent,create safebox tx sent,创建保险箱交易已发送
+waiting for the transaction to be executed,waiting for the transaction to be executed,等待交易的执行
+tx failed,tx failed,交易失败
+withdraw tx sent,withdraw tx sent,取款交易已发送
+withdraw from safebox,withdraw from safebox,从保险箱中提款
+update employee salary,update employee salary,更新雇员工资
+approve tx sent,approve tx sent,批准交易已发送
+Approve Failed,Approve Failed,批准失败
+batch pay tx sent,batch pay tx sent,批量支付交易已发送
+batch streaming pay tx sent,batch streaming pay tx sent,批量流支付工资已发送
+login cancel,login cancel,登录取消
+login error,login error,登录错误
+login success,login success,登录成功
+tx success,tx success,成功发送
+successful send the streaming salary,successful send the streaming salary,成功发送流媒体工资
+claim salary,claim salary,领取工资
+view,view,查看
+max amount:,max amount:,最大金额
+safebox is created,safebox is created,保险箱已创建
+withdraw,withdraw,取款

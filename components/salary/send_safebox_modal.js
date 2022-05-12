@@ -14,6 +14,7 @@ import {getTokenName} from 'helper/token'
 import {withTranslate,withMustLogin} from 'hocs/index'
 import { denormalize } from 'normalizr';
 import { userSchema } from 'redux/schema/index'
+import message from 'components/common/message'
 
 import {addSalary,updateSalary} from 'redux/reducer/salary'
 import {autoDecimal} from 'helper/number'
@@ -26,7 +27,6 @@ import Zkpayroll from 'helper/web3/zkpayroll';
 import {CheckCircleIcon} from '@heroicons/react/solid'
 //测试
 import EtherscanTx from 'components/etherscan/tx';
-
 import {getValueFromAmountAndDecimals} from 'helper/web3/number'
 
 @withTranslate
@@ -45,7 +45,6 @@ class SalarySendModal extends React.Component {
         this.checkApproveAmount = ::this.checkApproveAmount
         this.approveAmount = ::this.approveAmount
         this.sendSalary = ::this.sendSalary
-        this.showDuringTime = ::this.showDuringTime
     }
 
     ///进入的时候会检查是否approve过足够的金额
@@ -75,15 +74,13 @@ class SalarySendModal extends React.Component {
             'checking_approve_amount'  : true
         })
 
-        let approve_address = getConfig('STEAMING_PAY_CONTRACT_ADDRESS')
+        let approve_address = getConfig('ZKPAY_CONTRACT_ADDRESS')
 
         let erc20 = new Erc20(contract_address)
         let allowance = await erc20.allowance(login_user.get('wallet_address'),approve_address)
 
         ///把total_amount转换为bn的数据
         let total_amount_in_ethers = await erc20.getValueFromAmount(total_amount);
-
-        console.log('debug03,当前批准的金额是:',allowance.toString(),approve_address);
 
         if (allowance.lt(total_amount_in_ethers)) {
             // console.log('allowance不足，要求是%s，实际上拿到是%s',total_amount_in_ethers.toString(),allowance.toString())
@@ -113,7 +110,7 @@ class SalarySendModal extends React.Component {
         let token_name = getTokenName(contract_address);
         let total_amount_in_ethers = await erc20.getValueFromAmount(amount);
 
-        let approve_address = getConfig('STEAMING_PAY_CONTRACT_ADDRESS')
+        let approve_address = getConfig('ZKPAY_CONTRACT_ADDRESS')
         try {
             let tx = await erc20.approve(approve_address,total_amount_in_ethers);
           
@@ -160,45 +157,34 @@ class SalarySendModal extends React.Component {
         let values = {
             'amount' : [],
             'token_address' : [],
-            'wallet_address': [],
-            'start_times'   : [],
-            'stop_times'    : []
+            'wallet_address': []
         }
-        let zkpayroll = new Zkpayroll();
         let erc20 = new Erc20(contract_address)
         let decimals = await erc20.getDecimals();
 
-        let startime = Math.floor(Date.now() / 1000);
-
         list_rows.map(one=>{
             if (one.get('contract_address') == contract_address) {
-                
                 let amount = getValueFromAmountAndDecimals(one.get('amount'),decimals);
-                let amount_new = zkpayroll.getAmountFromDuringAndAmount(one.get('during_time'),amount)
-
-                console.log('debug03,发放的金额计算后改为:',amount_new.toString());
-
-                values.amount.push(amount_new);
+                values.amount.push(amount);
                 values.wallet_address.push(one.get('address'));
                 values.token_address.push(contract_address);
-                values.start_times.push(startime);
-                values.stop_times.push(startime + Number(one.get('during_time')));
-
             }
         })
 
-
-        //解决合约不能除不尽的问题
-        
         console.log('values',values)
 
         //2.调用发工资的合约
         try {
 
-            let tx = await zkpayroll.batchStreamPay(values.wallet_address,values.amount,values.token_address,values.start_times,values.stop_times);
+            let clear_msg = message.loading(t('waiting for calling metamask'));
+
+            let zkpayroll = new Zkpayroll();
+            let tx = await zkpayroll.batchZkPay(values.token_address,values.wallet_address,values.amount);
+
+            clear_msg();
                       
             notification.info({
-                'message' : t('batch streaming pay tx sent'),
+                'message' : t('batch pay tx sent'),
                 'description' : t('waiting for the transaction to be executed'),
             })
 
@@ -218,8 +204,8 @@ class SalarySendModal extends React.Component {
     
             notification.success({
                 'key' : tx.hash,
-                'message' : t('tx success'),
-                'description' : t('successful send the streaming salary'),
+                'message' : 'tx success',
+                'description' : 'successful send the salary',
                 'duration' : 5
             })
         }catch(e) {
@@ -231,24 +217,6 @@ class SalarySendModal extends React.Component {
         }
 
 
-    }
-
-    showDuringTime(during_time) {
-        
-        const {t} = this.props.i18n;
-
-        switch(Number(during_time)) {
-            case 86400:
-                return <div className='tag tag-green'>{t('one day')}</div>
-            case 604800:
-                return <div className='tag tag-blue'>{t('7 days')}</div>
-            case 2592000:
-                return <div className='tag tag-yellow'>{t('30 days')}</div>
-            case 31536000:
-                return <div className='tag tag-red'>{t('365 days')}</div>
-            default:
-                return <div className='tag tag-gray'>{during_time} {t('seconds')}</div>
-        }
     }
 
     render() {
@@ -291,7 +259,6 @@ class SalarySendModal extends React.Component {
                                 <th>{t('name')}</th>
                                 <th>{t('wallet')}</th>
                                 <th>{t('amount')}</th>
-                                <th>{t('during_time')}</th>
                             </tr>
                         </thead>
                         <tbody> 
@@ -302,7 +269,6 @@ class SalarySendModal extends React.Component {
                                             <td>{one.get('name')}</td>
                                             <td><AddressOne wallet_address={one.get('address')} /></td>
                                             <td className='uppercase'>{autoDecimal(one.get('amount'))} {token_name}</td>
-                                            <td className=''>{this.showDuringTime(one.get('during_time'))}</td>
                                         </tr>
                                     }else {
                                         return null;
@@ -312,6 +278,8 @@ class SalarySendModal extends React.Component {
                         </tbody>                     
                     </table>
                     
+                    <h2 className='h2 text-center my-4'>{t('batch send salary to zk safebox')}</h2>
+
                     {
                         (page == 'step3')
                         ? <div className='border-2 border-green-400 rounded-lg overflow-hidden py-12'>

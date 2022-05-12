@@ -44,6 +44,14 @@ class translateHelper  {
                 "(t(\"",
                 "\""
             ],
+            [
+                " t('",
+                "'"
+            ],
+            [
+                " t(\"",
+                "\""
+            ],
         ]
 
         this.findTranlateText = this.findTranlateText.bind(this)

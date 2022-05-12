@@ -1,10 +1,10 @@
-import {getAmountFromIntAmount,getIntAmountByAmount} from 'helper/number'
+// import {getAmountFromIntAmount,getIntAmountByAmount} from 'helper/number'
 import Metamask from 'helper/web3/metamask'
 import autobind from 'autobind-decorator'
 import { ethers } from "ethers";
-import notification from 'components/common/notification'
+// import notification from 'components/common/notification'
 import {getConfig} from 'helper/config'
-
+import Contract  from 'helper/web3/contract'
 const steamingpay_abi = [
   {
     "inputs": [],
@@ -529,39 +529,51 @@ const steamingpay_abi = [
   }
 ]
 
-
-export default class SteamingPay {
+export default class SteamingPay extends Contract {
 
     constructor() {
+        super();
 
-        console.log('debug:steamingpay init')
         let contract_address = getConfig('STEAMING_PAY_CONTRACT_ADDRESS');
-        console.log('debug:steamingpay init2',contract_address)
-
         let provider = new ethers.providers.Web3Provider(window.ethereum)
         this.contract = new ethers.Contract(contract_address, steamingpay_abi, provider.getSigner());
-        this.metamask = new Metamask();
     }
 
-    @autobind
-    async checkConnect() {
-        let account = await this.metamask.connectWallet();
-        if (account.connectedStatus == false) {
-            return false;
-        }
-        return true;
-    }
-    // async batchPay(token_addresses,to_addresses,amounts) {
-    //     let tx = await this.contract.batchPay(token_addresses,to_addresses,amounts);
-    //     return tx;
-    // }
     async getUserStreams(address,from,end) {
+        let ret = await this.beforeRequest();
+        if (!ret) {
+            return;
+        }
+        let tx = await this.contract.getUserStreams(address,from,end);
+        return tx;
+    }
 
-       let tx = await this.contract.getUserStreams(address,from,end);
+    async getSteaming(index) {
+        let ret = await this.beforeRequest();
+        if (!ret) {
+          return;
+        }
+        let tx = await this.contract.streams(index);
+        return tx;
+    }
 
-       console.log('debug:steamingpay读取出来的数据是:'.tx)
+    async withdrawFromStream(steam_id,amount) {
+        let ret = await this.beforeRequest();
+        if (!ret) {
+          return;
+        }
+        let tx = await this.contract.withdrawFromStream(steam_id,amount);
+        return tx;
+    }
 
-       return tx;
+    async balanceOf(steam_id,addr) {
+        let ret = await this.beforeRequest();
+        if (!ret) {
+          return;
+        }
+        console.log('debug,callbalanceof',steam_id,addr)
+        let tx = await this.contract.balanceOf(steam_id,addr);
+        return tx;
     }
 
 }

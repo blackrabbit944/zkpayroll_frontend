@@ -1,35 +1,23 @@
 import React from 'react';
 
-import { connect } from "react-redux";
-import classNames from 'classnames';
-
 import Modal from 'components/common/modal'
 import {getSteamingData} from 'helper/web3/number'
 
-import AddressOne from 'components/etherscan/address'
 import {getTokenName} from 'helper/token'
 
 import {withTranslate,withMustLogin} from 'hocs/index'
 import CircleLine from 'components/steaming/circle'
 import { getAmountFromValueAndDecimals } from 'helper/web3/number';
-import {autoDecimals} from 'helper/number'
 
-import { denormalize } from 'normalizr';
-import { userSchema } from 'redux/schema/index'
+import message from 'components/common/message'
+import Button from 'components/common/button'
 
-import {addSalary,updateSalary} from 'redux/reducer/salary'
 import {autoDecimal} from 'helper/number'
-import {getConfig} from 'helper/config'
 
-import Erc20  from 'helper/web3/erc20'
 import notification from 'components/common/notification'
-// import {strFormat} from 'helper/translate'
-import Zkpayroll from 'helper/web3/zkpayroll';
-import {CheckCircleIcon} from '@heroicons/react/solid'
+import steamingpay from 'helper/web3/steamingpay'
 //测试
-import EtherscanTx from 'components/etherscan/tx';
 
-import {getValueFromAmountAndDecimals} from 'helper/web3/number'
 
 @withTranslate
 @withMustLogin
@@ -38,116 +26,81 @@ class SalaryViewModal extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-          
+            sending_withdraw_tx : false
         }
-        // this.checkApproveAmount = ::this.checkApproveAmount
-        // this.approveAmount = ::this.approveAmount
-        // this.sendSalary = ::this.sendSalary
-        // this.showDuringTime = ::this.showDuringTime
+        this.claimSalary = ::this.claimSalary
+
     }
 
-    ///进入的时候会检查是否approve过足够的金额
-    // static getDerivedStateFromProps(props, state) {
-    //     let output = {};
-    //     if (props.contract_address) {
-    //         output['contract_address'] = props.contract_address;
-    //     }
-    //     if (props.total_amount) {
-    //         output['total_amount'] = props.total_amount;
-    //     }
-    //     return output
-    // }
 
-    // componentDidUpdate(prevProps,prevState) {
-    //     if (this.props.visible && !prevProps.visible) {
-    //         this.checkApproveAmount(this.state.contract_address,this.state.total_amount);
-    //     }
-    // }
+    async claimSalary() {
+        //1.循环拿到列表并组织数据
+        const {t} =this.props.i18n;
+        const {item} = this.props;
 
+        let tx_data = getSteamingData(item);
+        // console.log('debug:claimSalary,tx_data',item,tx_data);
 
-    // async sendSalary() {
-    //     //1.循环拿到列表并组织数据
-    //     const {t} =this.props.i18n;
-    //     const {list_rows,contract_address} = this.props;
+        // console.log('debug:claimSalary,amount',tx_data.total_allow_claim.toString());
+        // console.log('debug:claimSalary,total',tx_data.total.toString());
 
-    //     let values = {
-    //         'amount' : [],
-    //         'token_address' : [],
-    //         'wallet_address': [],
-    //         'start_times'   : [],
-    //         'stop_times'    : []
-    //     }
-    //     let zkpayroll = new Zkpayroll();
-    //     let erc20 = new Erc20(contract_address)
-    //     let decimals = await erc20.getDecimals();
+        //2.调用发工资的合约
+        let steaming = new steamingpay();
 
-    //     let startime = Math.floor(Date.now() / 1000);
+        let clear_checking_balance_msg = message.loading(t('checking for allowed withdraw balance'));
 
-    //     list_rows.map(one=>{
-    //         if (one.get('contract_address') == contract_address) {
-                
-    //             let amount = getValueFromAmountAndDecimals(one.get('amount'),decimals);
-    //             let amount_new = zkpayroll.getAmountFromDuringAndAmount(one.get('during_time'),amount)
+        let allowed_balance = await steaming.balanceOf(item.streamId,item.recipient);
 
-    //             console.log('debug03,发放的金额计算后改为:',amount_new.toString());
+        clear_checking_balance_msg();
 
-    //             values.amount.push(amount_new);
-    //             values.wallet_address.push(one.get('address'));
-    //             values.token_address.push(contract_address);
-    //             values.start_times.push(startime);
-    //             values.stop_times.push(startime + Number(one.get('during_time')));
+        let tx;
+        try {
+            let clear_withdraw_msg = message.loading(t('sending withdraw tx'));
+            tx =  await steaming.withdrawFromStream(item.streamId,allowed_balance)
 
-    //         }
-    //     })
+            clear_withdraw_msg();
 
+            notification.info({
+                'message' : t('withdraw tx sent'),
+                'description' : t('waiting for the transaction to be executed'),
+            })
 
-    //     //解决合约不能除不尽的问题
-        
-    //     console.log('values',values)
-
-    //     //2.调用发工资的合约
-    //     try {
-
-    //         let tx = await zkpayroll.batchStreamPay(values.wallet_address,values.amount,values.token_address,values.start_times,values.stop_times);
-                      
-    //         notification.info({
-    //             'message' : t('batch steaming pay tx sent'),
-    //             'description' : t('waiting for the transaction to be executed'),
-    //         })
-
-    //         this.setState({
-    //             sending_batch_tx : true
-    //         })
+            this.setState({
+                sending_withdraw_tx : true
+            })
             
-    //         await tx.wait();
-    
-    //         notification.remove(tx.hash);
+            await tx.wait();
 
-    //         this.setState({
-    //             sending_batch_tx : false,
-    //             batch_tx_hash:tx.hash,
-    //             page : "step3"         
-    //         })
-    
-    //         notification.success({
-    //             'key' : tx.hash,
-    //             'message' : 'tx success',
-    //             'description' : 'successful send the steaming salary',
-    //             'duration' : 5
-    //         })
-    //     }catch(e) {
-    //         console.log('debug:e',e);
-    //         notification.error({
-    //             message: t('tx failed'),
-    //             description : e.message,
-    //         })
-    //     }
+            notification.remove(tx.hash);
+
+            this.setState({
+                sending_withdraw_tx : false,
+                batch_tx_hash:tx.hash,
+                page : "step3"         
+            })
+
+            notification.success({
+                'key' : tx.hash,
+                'message' : 'tx success',
+                'description' : 'successful withdraw salary',
+                'duration' : 5
+            })
+
+            this.props.closeModal();
+
+        }catch(e) {
+            console.log('debug:e',e);
+            notification.error({
+                message: t('tx failed'),
+                description : e.message,
+            })
+        }
 
 
-    // }
+    }
 
     render() {
-        const {page} = this.state;
+        const {sending_withdraw_tx} = this.state;
         const {visible,item} = this.props;
         const {t} = this.props.i18n;
 
@@ -155,13 +108,16 @@ class SalaryViewModal extends React.Component {
             return null;
         }
 
-        console.log('item',item);
+        // console.log('debug:viewmodal,item',item);
 
         let token_name = getTokenName(item.tokenAddress);
 
         let tx_data = getSteamingData(item);
         let total_amount = getAmountFromValueAndDecimals(tx_data.total.toString(),item.decimals)
-        let total_allow_climb_amount = getAmountFromValueAndDecimals(tx_data.total_allow_climb.toString(),item.decimals)
+        let total_allow_claim_amount = getAmountFromValueAndDecimals(tx_data.total_allow_claim.toString(),item.decimals)
+        let claim_amount = getAmountFromValueAndDecimals(tx_data.claimed.toString(),item.decimals)
+
+        // let total_release = tx_data.total_allow_claim.add(tx_data.claimed)
 
         return  <Modal
             width={800}
@@ -174,7 +130,7 @@ class SalaryViewModal extends React.Component {
                     <CircleLine 
                         width={120}
                         stroke={10}
-                        total_allow_climb={tx_data.total_allow_climb} 
+                        total_allow_claim={tx_data.total_release} 
                         total={tx_data.total} />
                 </div>
 
@@ -189,8 +145,8 @@ class SalaryViewModal extends React.Component {
                         </div>
                     </div>
                     <div className='mb-4'>
-                        <div className='text-gray-500 font-bold'>{t('released salary')}</div>
-                        <div>{autoDecimal(total_allow_climb_amount.toString())}
+                        <div className='text-gray-500 font-bold'>{t('unclaimed salary')}</div>
+                        <div>{autoDecimal(total_allow_claim_amount.toString())}
                             <span className='uppercase ml-2'>
                                 {token_name}
                             </span>
@@ -198,7 +154,7 @@ class SalaryViewModal extends React.Component {
                     </div>
                     <div>
                         <div className='text-gray-500 font-bold'>{t('already claimed salary')}</div>
-                        <div>{autoDecimal(tx_data.climbed.toString())}
+                        <div>{autoDecimal(claim_amount.toString())}
                         <span className='uppercase ml-2'>
                                 {token_name}
                             </span>
@@ -207,7 +163,7 @@ class SalaryViewModal extends React.Component {
                 </div>
 
                 <div className='flex justify-center my-12'>
-                    <button className='btn btn-primary'>claim salary</button>
+                    <Button loading={sending_withdraw_tx} className='btn btn-primary' onClick={this.claimSalary}>{t('claim salary')}</Button>
                 </div>
 
             </div>
